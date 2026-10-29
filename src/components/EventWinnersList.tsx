@@ -14,83 +14,19 @@ export interface EventWinner {
   venue: string;
 }
 
-export const CHAMPIONSHIP_WINNERS: EventWinner[] = [
-  {
-    id: "w1",
-    eventName: "Men's 100m Sprint — Championship Final",
-    category: "Track Sprint",
-    winnerName: "Abdulai",
-    hallId: "blue",
-    winningMark: "10.15s",
-    points: 12,
-    date: "2026-10-27",
-    venue: "Main Stadium Track",
-  },
-  {
-    id: "w2",
-    eventName: "Women's 200m Sprint — Championship Final",
-    category: "Track Sprint",
-    winnerName: "Sarah Addo",
-    hallId: "purple",
-    winningMark: "23.90s",
-    points: 10,
-    date: "2026-10-27",
-    venue: "Main Stadium Track",
-  },
-  {
-    id: "w3",
-    eventName: "Men's 4x100m Relay — Grand Final",
-    category: "Relay",
-    winnerName: "Gold Relay Squad",
-    hallId: "gold",
-    winningMark: "39.88s (Record)",
-    points: 15,
-    date: "2026-10-26",
-    venue: "Main Stadium Track",
-  },
-  {
-    id: "w4",
-    eventName: "Men's High Jump — Finals",
-    category: "Field Jump",
-    winnerName: "Kofi Mensah",
-    hallId: "purple",
-    winningMark: "2.05m",
-    points: 10,
-    date: "2026-10-26",
-    venue: "Field Zone B",
-  },
-  {
-    id: "w5",
-    eventName: "Women's Long Jump — Finals",
-    category: "Field Jump",
-    winnerName: "Abena Serwaa",
-    hallId: "gold",
-    winningMark: "6.12m",
-    points: 12,
-    date: "2026-10-25",
-    venue: "Jumping Pit 1",
-  },
-  {
-    id: "w6",
-    eventName: "Men's Shot Put — Championship Finals",
-    category: "Field Throw",
-    winnerName: "Ibrahim Fuseini",
-    hallId: "gold",
-    winningMark: "16.85m",
-    points: 10,
-    date: "2026-10-25",
-    venue: "Throwing Circle A",
-  },
-];
+export const CHAMPIONSHIP_WINNERS: EventWinner[] = [];
 
 export default function EventWinnersList() {
-  const [winners, setWinners] = useState<EventWinner[]>(CHAMPIONSHIP_WINNERS);
+  const [winners, setWinners] = useState<EventWinner[]>([]);
 
   useEffect(() => {
     const loadDynamic = () => {
       try {
-        const raw = localStorage.getItem("championship_races_v2");
-        if (!raw) return;
+        const raw = localStorage.getItem("championship_races_zero_v3") || localStorage.getItem("championship_races_v2");
+        if (!raw) {
+          setWinners([]);
+          return;
+        }
         const races = JSON.parse(raw);
         if (Array.isArray(races)) {
           const dynamicWinners: EventWinner[] = [];
@@ -113,13 +49,11 @@ export default function EventWinnersList() {
             }
           });
 
-          // Deduplicate by eventName
-          const map = new Map<string, EventWinner>();
-          CHAMPIONSHIP_WINNERS.forEach((w) => map.set(w.eventName, w));
-          dynamicWinners.forEach((w) => map.set(w.eventName, w));
-          setWinners(Array.from(map.values()));
+          setWinners(dynamicWinners);
         }
-      } catch {}
+      } catch {
+        setWinners([]);
+      }
     };
 
     loadDynamic();
@@ -145,85 +79,96 @@ export default function EventWinnersList() {
             Gold medalists, winning marks, and official points awarded per athletics discipline
           </p>
         </div>
-        <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#fbbf24", background: "rgba(245,158,11,0.12)", border: "1px solid rgba(245,158,11,0.3)", padding: "4px 12px", borderRadius: 999 }}>
+        <div style={{ fontSize: "0.78rem", fontWeight: 700, color: winners.length > 0 ? "#fbbf24" : "#94a3b8", background: winners.length > 0 ? "rgba(245,158,11,0.12)" : "rgba(255,255,255,0.05)", border: "1px solid var(--border-color)", padding: "4px 12px", borderRadius: 999 }}>
           🏆 {winners.length} Gold Medals Awarded
         </div>
       </div>
 
-      {/* Grid of Winners */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 16 }}>
-        {winners.map((win) => {
-          const hall = getHall(win.hallId);
-          const isAbdulai = win.winnerName.toLowerCase().includes("abdulai");
+      {winners.length === 0 ? (
+        <div className="glass-card" style={{ padding: "32px 24px", textAlign: "center", border: "1px dashed var(--border-color)" }}>
+          <div style={{ fontSize: "2rem", marginBottom: 10 }}>🏅</div>
+          <div style={{ fontWeight: 800, color: "var(--text-primary)", fontSize: "1.1rem", marginBottom: 4 }}>
+            Championship Meet Opening — All Halls Start at 0 Points
+          </div>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.88rem", maxWidth: 540, margin: "0 auto" }}>
+            No official winners recorded yet. All four Halls begin at 0. As soon as the Judge inputs verified results at the Judge Desk, champions and gold medals will appear here in real time.
+          </p>
+        </div>
+      ) : (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 16 }}>
+          {winners.map((win) => {
+            const hall = getHall(win.hallId);
+            const isAbdulai = win.winnerName.toLowerCase().includes("abdulai");
 
-          return (
-            <div
-              key={win.id}
-              className="glass-card"
-              style={{
-                padding: "20px 22px",
-                borderLeft: `5px solid ${hall.color}`,
-                boxShadow: isAbdulai ? `0 0 20px ${hall.glow}` : undefined,
-                background: isAbdulai ? `linear-gradient(135deg, ${hall.bg}33, var(--bg-card))` : "var(--bg-card)",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-                <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#818cf8", background: "rgba(99,102,241,0.12)", padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>
-                  {win.category}
-                </span>
-                <span style={{ fontSize: "0.78rem", color: "#4ade80", fontWeight: 800 }}>
-                  +{win.points} pts
-                </span>
-              </div>
+            return (
+              <div
+                key={win.id}
+                className="glass-card"
+                style={{
+                  padding: "20px 22px",
+                  borderLeft: `5px solid ${hall.color}`,
+                  boxShadow: isAbdulai ? `0 0 20px ${hall.glow}` : undefined,
+                  background: isAbdulai ? `linear-gradient(135deg, ${hall.bg}33, var(--bg-card))` : "var(--bg-card)",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#818cf8", background: "rgba(99,102,241,0.12)", padding: "2px 8px", borderRadius: 4, textTransform: "uppercase" }}>
+                    {win.category}
+                  </span>
+                  <span style={{ fontSize: "0.78rem", color: "#4ade80", fontWeight: 800 }}>
+                    +{win.points} pts
+                  </span>
+                </div>
 
-              <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "var(--text-primary)", marginBottom: 8, lineHeight: 1.25 }}>
-                {win.eventName}
-              </div>
+                <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "var(--text-primary)", marginBottom: 8, lineHeight: 1.25 }}>
+                  {win.eventName}
+                </div>
 
-              {/* Winner row: Medal, Name, Hall Badge */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-color)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: 8,
-                      background: hall.color,
-                      color: "#ffffff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "1rem",
-                      fontWeight: 900,
-                      boxShadow: `0 0 10px ${hall.glow}`,
-                      flexShrink: 0,
-                    }}
-                  >
-                    🥇
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 900, fontSize: "1rem", color: "var(--text-primary)" }}>
-                      {win.winnerName}
+                {/* Winner row: Medal, Name, Hall Badge */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border-color)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 8,
+                        background: hall.color,
+                        color: "#ffffff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "1rem",
+                        fontWeight: 900,
+                        boxShadow: `0 0 10px ${hall.glow}`,
+                        flexShrink: 0,
+                      }}
+                    >
+                      🥇
                     </div>
-                    <div style={{ fontSize: "0.74rem", color: hall.color, fontWeight: 700, textTransform: "uppercase" }}>
-                      {hall.name}
+                    <div>
+                      <div style={{ fontWeight: 900, fontSize: "1rem", color: "var(--text-primary)" }}>
+                        {win.winnerName}
+                      </div>
+                      <div style={{ fontSize: "0.74rem", color: hall.color, fontWeight: 700, textTransform: "uppercase" }}>
+                        {hall.name}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontFamily: "monospace", fontSize: "0.95rem", fontWeight: 800, color: "#fcd34d" }}>
+                      {win.winningMark}
+                    </div>
+                    <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>
+                      Winning Mark
                     </div>
                   </div>
                 </div>
-
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontFamily: "monospace", fontSize: "0.95rem", fontWeight: 800, color: "#fcd34d" }}>
-                    {win.winningMark}
-                  </div>
-                  <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>
-                    Winning Mark
-                  </div>
-                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

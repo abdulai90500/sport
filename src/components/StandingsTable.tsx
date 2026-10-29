@@ -1,4 +1,7 @@
+"use client";
+import { useState, useEffect } from "react";
 import { DEMO_STANDINGS, getHall, HallStanding } from "@/lib/data";
+import { calculateLiveStandings } from "@/lib/raceStore";
 
 interface Props {
   data?: HallStanding[];
@@ -7,8 +10,32 @@ interface Props {
 
 const MEDALS = ["🥇", "🥈", "🥉", "4️⃣"];
 
-export default function StandingsTable({ data = DEMO_STANDINGS, compact = false }: Props) {
-  const sorted = [...data].sort((a, b) => b.pts - a.pts);
+export default function StandingsTable({ data, compact = false }: Props) {
+  const [standings, setStandings] = useState<HallStanding[]>(data || DEMO_STANDINGS);
+
+  useEffect(() => {
+    if (data) {
+      setStandings(data);
+      return;
+    }
+    const update = () => {
+      try {
+        const live = calculateLiveStandings();
+        setStandings(live);
+      } catch {
+        setStandings(DEMO_STANDINGS);
+      }
+    };
+    update();
+    window.addEventListener("championship-races-changed", update);
+    window.addEventListener("storage", update);
+    return () => {
+      window.removeEventListener("championship-races-changed", update);
+      window.removeEventListener("storage", update);
+    };
+  }, [data]);
+
+  const sorted = [...standings].sort((a, b) => b.pts - a.pts);
 
   return (
     <div style={{ overflowX: "auto" }}>

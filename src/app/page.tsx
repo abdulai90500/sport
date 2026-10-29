@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import HallCard from "@/components/HallCard";
+import HomeHallCards from "@/components/HomeHallCards";
 import StandingsTable from "@/components/StandingsTable";
 import EventsTable from "@/components/EventsTable";
 import EventWinnersList from "@/components/EventWinnersList";
 import BreakingLiveBanner from "@/components/BreakingLiveBanner";
-import { DEMO_STANDINGS, HALLS } from "@/lib/data";
+import { HALLS } from "@/lib/data";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,8 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const sortedStandings = [...DEMO_STANDINGS].sort((a, b) => b.pts - a.pts);
-
   return (
     <main style={{ minHeight: "100vh", background: "var(--bg-primary)", color: "var(--text-primary)", transition: "background 0.2s ease, color 0.2s ease" }}>
       <Navbar />
@@ -74,31 +72,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ─── 2. TOP: 4 HALL CARDS (Directly under Marquee, No static Hall Profiles title) ─── */}
+      {/* ─── 2. TOP: 4 HALL CARDS (Starts at 0 points for all halls) ─── */}
       <section style={{ maxWidth: 1200, margin: "0 auto", paddingTop: 32, paddingBottom: 32, paddingLeft: 24, paddingRight: 24 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
-          {sortedStandings.map((row) => (
-            <div key={row.hall} style={{ position: "relative" }}>
-              <HallCard hall={row.hall} score={row.pts} size="md" showScore />
-              <div
-                style={{
-                  position: "absolute",
-                  top: 12,
-                  right: 12,
-                  fontSize: "0.75rem",
-                  color: "#f1f5f9",
-                  fontWeight: 700,
-                  background: "rgba(0,0,0,0.55)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: 6,
-                  padding: "3px 8px",
-                }}
-              >
-                {row.pts} pts
-              </div>
-            </div>
-          ))}
-        </div>
+        <HomeHallCards />
       </section>
 
       {/* ─── 3. FEATURE EVENT (Abdulai of Blue Hall in 1st Place) ─── */}

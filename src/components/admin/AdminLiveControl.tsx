@@ -14,16 +14,16 @@ const ATHLETICS_PRESETS = [
 export const INITIAL_BROADCAST: LiveEventBroadcast = {
   id: "live-ath-1",
   sport: "Athletics",
-  eventName: "Men's 100m Sprint — Championship Final",
+  eventName: "Limkokwing 4th Inter-Hall Athletic Meet",
   category: "track",
   venue: "Main Stadium Olympic Track",
-  status: "LIVE",
-  timeElapsed: "Championship Heat / Gold Medals",
+  status: "UPCOMING",
+  timeElapsed: "Championship Opening · All Halls Start at 0 Points",
   standings: [
-    { position: 1, hallId: "blue", athlete: "Abdulai", markOrTime: "10.15s", points: 12 },
-    { position: 2, hallId: "gold", athlete: "Emmanuel Mensah", markOrTime: "10.24s", points: 10 },
-    { position: 3, hallId: "purple", athlete: "Samuel Koffi", markOrTime: "10.51s", points: 8 },
-    { position: 4, hallId: "black", athlete: "Prince Adams", markOrTime: "10.65s", points: 6 },
+    { position: 1, hallId: "blue", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
+    { position: 2, hallId: "black", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
+    { position: 3, hallId: "gold", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
+    { position: 4, hallId: "purple", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
   ],
 };
 
@@ -32,16 +32,19 @@ export default function AdminLiveControl() {
   const [savedNotice, setSavedNotice] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("current_live_broadcast");
+    const saved = localStorage.getItem("current_live_broadcast_v3") || localStorage.getItem("current_live_broadcast");
     if (saved) {
       try {
         setBroadcast(JSON.parse(saved));
       } catch {}
+    } else {
+      setBroadcast(INITIAL_BROADCAST);
     }
   }, []);
 
   const saveBroadcast = (updated: LiveEventBroadcast) => {
     setBroadcast(updated);
+    localStorage.setItem("current_live_broadcast_v3", JSON.stringify(updated));
     localStorage.setItem("current_live_broadcast", JSON.stringify(updated));
     window.dispatchEvent(new Event("storage"));
     setSavedNotice(true);

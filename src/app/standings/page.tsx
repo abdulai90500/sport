@@ -33,17 +33,23 @@ export default function StandingsPage() {
         </div>
 
         {/* Leader banner */}
-        <div style={{ background: `linear-gradient(135deg, ${leaderHall.bg}cc, rgba(13,13,31,0.97))`, border: `1px solid ${leaderHall.color}44`, borderRadius: 20, padding: "28px 32px", marginBottom: 40, display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", boxShadow: `0 0 32px ${leaderHall.glow}` }}>
+        <div style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(13,13,31,0.97))", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 20, padding: "28px 32px", marginBottom: 40, display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", boxShadow: "0 0 32px rgba(99,102,241,0.2)" }}>
           <div style={{ fontSize: "3rem" }}>🏆</div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: "0.75rem", color: leaderHall.color, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Championship Leader</div>
-            <div style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: "1.8rem", color: leaderHall.color }}>{leaderHall.name}</div>
+            <div style={{ fontSize: "0.75rem", color: "#818cf8", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>
+              {leader.pts > 0 ? `Championship Leader: ${leaderHall.name}` : "Championship Opening · All Halls at 0 Points"}
+            </div>
+            <div style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: "1.8rem", color: leader.pts > 0 ? leaderHall.color : "#f1f5f9" }}>
+              {leader.pts > 0 ? leaderHall.name : "Season 2026 Starting Leaderboard"}
+            </div>
             <div style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
-              🥇 {leader.gold} Golds · 🥈 {leader.silver} Silvers · 🥉 {leader.bronze} Bronzes
+              {leader.pts > 0
+                ? `🥇 ${leader.gold} Golds · 🥈 ${leader.silver} Silvers · 🥉 ${leader.bronze} Bronzes`
+                : "All four Halls (Blue, Black, Gold, Purple) are tied at 0 points awaiting verified event results."}
             </div>
           </div>
           <div style={{ textAlign: "center" }}>
-            <div className="score-num" style={{ fontSize: "3.5rem", color: "#f1f5f9", textShadow: `0 0 20px ${leaderHall.glow}` }}>{leader.pts}</div>
+            <div className="score-num" style={{ fontSize: "3.5rem", color: "#f1f5f9" }}>{leader.pts}</div>
             <div style={{ fontSize: "0.8rem", color: "#64748b" }}>championship points</div>
           </div>
         </div>

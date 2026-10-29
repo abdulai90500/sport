@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DEMO_STANDINGS, HALLS, getHall, HallStanding } from "@/lib/data";
+import { calculateLiveStandings } from "@/lib/raceStore";
 import StandingsTable from "@/components/StandingsTable";
 
 export default function AdminStandingsPage() {
@@ -9,6 +10,23 @@ export default function AdminStandingsPage() {
   const [selectedHall, setSelectedHall] = useState("blue");
   const [pointsAdjustment, setPointsAdjustment] = useState<number>(0);
   const [reason, setReason] = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      try {
+        setStandings(calculateLiveStandings());
+      } catch {
+        setStandings(DEMO_STANDINGS);
+      }
+    };
+    update();
+    window.addEventListener("championship-races-changed", update);
+    window.addEventListener("storage", update);
+    return () => {
+      window.removeEventListener("championship-races-changed", update);
+      window.removeEventListener("storage", update);
+    };
+  }, []);
 
   const handleAdjustPoints = () => {
     if (pointsAdjustment === 0) return;

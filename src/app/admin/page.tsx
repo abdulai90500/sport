@@ -5,18 +5,16 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Admin & Officer Dashboard | Inter-Hall Athletics" };
 
 const STATS = [
-  { label: "Registered Athletes", value: "248", icon: "🏃", color: "#818cf8" },
-  { label: "Active Live Heats",   value: "2",   icon: "🔴", color: "#f87171" },
-  { label: "Completed Finals",    value: "14",  icon: "✅", color: "#4ade80" },
-  { label: "Pending Eligibility", value: "7",   icon: "⏳", color: "#fbbf24" },
+  { label: "Registered Athletes", value: "24",  icon: "🏃", color: "#818cf8" },
+  { label: "Active Live Heats",   value: "0",   icon: "🔴", color: "#f87171" },
+  { label: "Completed Finals",    value: "0",   icon: "✅", color: "#4ade80" },
+  { label: "Pending Eligibility", value: "0",   icon: "⏳", color: "#fbbf24" },
 ];
 
 const RECENT_EVENTS = [
-  { time: "14:23", action: "Race Finalized", detail: "Gold Hall 1st (10.24s) in Men's 100m Sprint (+12 pts)", admin: "officer@sports.edu" },
-  { time: "14:15", action: "Heat Started", detail: "Women's 200m Sprint — Heat 2 (Purple vs Black)", admin: "officer@sports.edu" },
-  { time: "13:50", action: "Final Verified", detail: "Men's 4x100m Relay approved: Gold Hall 39.88s (+15 pts)", admin: "admin@sports.edu" },
-  { time: "13:30", action: "Athlete Cleared", detail: "STU047 (Kwame Darko) — eligible for Shot Put", admin: "admin@sports.edu" },
-  { time: "12:00", action: "Heat Created", detail: "Women's 400m Semi-Final (Blue vs Black)", admin: "admin@sports.edu" },
+  { time: "14:00", action: "Meet Initialized", detail: "All 4 Halls (Blue, Black, Gold, Purple) set to 0 points", admin: "admin@sports.edu" },
+  { time: "13:45", action: "Judge Desk Online", detail: "Track & Field scoring portal ready for official results", admin: "judge@sports.edu" },
+  { time: "13:30", action: "Races Scheduled", detail: "Sprint, Relay, and Field event heats ready for competition", admin: "admin@sports.edu" },
 ];
 
 export default function AdminDashboard() {

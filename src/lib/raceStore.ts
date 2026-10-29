@@ -54,61 +54,39 @@ export const INITIAL_RACES: RaceEvent[] = [
     name: "Men's 100m Sprint — Championship Final",
     category: "track",
     venue: "Main Stadium Olympic Track (Lane 1-4)",
-    date: "2026-10-27",
+    date: "2026-10-29",
     time: "14:00",
-    status: "completed",
+    status: "scheduled",
     athletes: [
       { id: "ath-1", name: "Abdulai", hallId: "blue", lane: 3, bibNumber: "101", studentId: "LUCT-2023-01", seedMark: "10.15s" },
       { id: "ath-2", name: "Emmanuel Mensah", hallId: "gold", lane: 4, bibNumber: "102", studentId: "LUCT-2023-45", seedMark: "10.24s" },
       { id: "ath-3", name: "Samuel Koffi", hallId: "purple", lane: 2, bibNumber: "103", studentId: "LUCT-2023-12", seedMark: "10.51s" },
       { id: "ath-4", name: "Prince Adams", hallId: "black", lane: 5, bibNumber: "104", studentId: "LUCT-2024-03", seedMark: "10.65s" },
     ],
-    results: {
-      eventId: "race-100m-m",
-      recordedBy: "judge@sports.edu",
-      recordedAt: "2026-10-27 14:12",
-      positions: [
-        { position: 1, athleteId: "ath-1", athleteName: "Abdulai", hallId: "blue", markOrTime: "10.15s", points: 12, prize: "🏆 Gold Trophy & Champion Medal + GH₵ 1,500 Prize" },
-        { position: 2, athleteId: "ath-2", athleteName: "Emmanuel Mensah", hallId: "gold", markOrTime: "10.24s", points: 9, prize: "🥈 Silver Medal & Runner-up Award + GH₵ 1,000 Prize" },
-        { position: 3, athleteId: "ath-3", athleteName: "Samuel Koffi", hallId: "purple", markOrTime: "10.51s", points: 6, prize: "🥉 Bronze Medal & Podium Award + GH₵ 600 Prize" },
-        { position: 4, athleteId: "ath-4", athleteName: "Prince Adams", hallId: "black", markOrTime: "10.65s", points: 4, prize: "🎖️ 4th Place Honor Certificate + GH₵ 300 Prize" },
-      ],
-    },
   },
   {
     id: "race-200m-w",
     name: "Women's 200m Sprint — Championship Final",
     category: "track",
     venue: "Main Stadium Olympic Track",
-    date: "2026-10-27",
+    date: "2026-10-29",
     time: "14:45",
-    status: "completed",
+    status: "scheduled",
     athletes: [
       { id: "ath-5", name: "Sarah Addo", hallId: "purple", lane: 3, bibNumber: "201", seedMark: "23.90s" },
       { id: "ath-6", name: "Grace Nyarko", hallId: "black", lane: 4, bibNumber: "202", seedMark: "24.15s" },
       { id: "ath-7", name: "Linda Ansah", hallId: "blue", lane: 2, bibNumber: "203", seedMark: "24.60s" },
       { id: "ath-8", name: "Patience Bonsu", hallId: "gold", lane: 5, bibNumber: "204", seedMark: "24.95s" },
     ],
-    results: {
-      eventId: "race-200m-w",
-      recordedBy: "judge@sports.edu",
-      recordedAt: "2026-10-27 14:55",
-      positions: [
-        { position: 1, athleteId: "ath-5", athleteName: "Sarah Addo", hallId: "purple", markOrTime: "23.90s", points: 12, prize: "🏆 Gold Trophy & Champion Medal + GH₵ 1,500 Prize" },
-        { position: 2, athleteId: "ath-6", athleteName: "Grace Nyarko", hallId: "black", markOrTime: "24.15s", points: 9, prize: "🥈 Silver Medal & Runner-up Award + GH₵ 1,000 Prize" },
-        { position: 3, athleteId: "ath-7", athleteName: "Linda Ansah", hallId: "blue", markOrTime: "24.60s", points: 6, prize: "🥉 Bronze Medal & Podium Award + GH₵ 600 Prize" },
-        { position: 4, athleteId: "ath-8", athleteName: "Patience Bonsu", hallId: "gold", markOrTime: "24.95s", points: 4, prize: "🎖️ 4th Place Honor Certificate + GH₵ 300 Prize" },
-      ],
-    },
   },
   {
     id: "race-relay-4x100m",
     name: "Men's 4x100m Relay — Grand Final",
     category: "track",
     venue: "Main Stadium Track",
-    date: "2026-10-28",
-    time: "15:30",
-    status: "live",
+    date: "2026-10-29",
+    time: "15:15",
+    status: "scheduled",
     athletes: [
       { id: "ath-9",  name: "Gold Relay Squad", hallId: "gold", lane: 4, bibNumber: "401", seedMark: "39.88s" },
       { id: "ath-10", name: "Blue Relay Squad", hallId: "blue", lane: 3, bibNumber: "402", seedMark: "40.10s" },
@@ -122,7 +100,7 @@ export const INITIAL_RACES: RaceEvent[] = [
     category: "field",
     venue: "Field Zone B High Jump Pit",
     date: "2026-10-29",
-    time: "11:00",
+    time: "15:45",
     status: "scheduled",
     athletes: [
       { id: "ath-13", name: "Kofi Mensah", hallId: "purple", lane: 1, bibNumber: "301", seedMark: "2.05m" },
@@ -137,7 +115,7 @@ export const INITIAL_RACES: RaceEvent[] = [
     category: "field",
     venue: "Throwing Circle A",
     date: "2026-10-29",
-    time: "13:00",
+    time: "16:15",
     status: "scheduled",
     athletes: [
       { id: "ath-17", name: "Ibrahim Fuseini", hallId: "gold", lane: 1, bibNumber: "501", seedMark: "16.85m" },
@@ -152,7 +130,7 @@ export const INITIAL_RACES: RaceEvent[] = [
     category: "track",
     venue: "Main Stadium Olympic Track",
     date: "2026-10-29",
-    time: "15:00",
+    time: "16:45",
     status: "scheduled",
     athletes: [
       { id: "ath-21", name: "Linda Ansah", hallId: "blue", lane: 3, bibNumber: "601", seedMark: "52.40s" },
@@ -163,10 +141,16 @@ export const INITIAL_RACES: RaceEvent[] = [
   },
 ];
 
-const STORAGE_KEY = "championship_races_v2";
+const STORAGE_KEY = "championship_races_zero_v3";
 
 export function getStoredRaces(): RaceEvent[] {
   if (typeof window === "undefined") return INITIAL_RACES;
+  // Cleanup older demo keys with non-zero points
+  try {
+    localStorage.removeItem("championship_races_v1");
+    localStorage.removeItem("championship_races_v2");
+  } catch {}
+
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_RACES));
@@ -179,6 +163,65 @@ export function getStoredRaces(): RaceEvent[] {
   } catch {
     return INITIAL_RACES;
   }
+}
+
+// Compute live standings strictly from verified race results (starts at 0 points for all halls)
+export function calculateLiveStandings(races?: RaceEvent[]): {
+  hall: HallId;
+  pts: number;
+  events: number;
+  gold: number;
+  silver: number;
+  bronze: number;
+  trackPts: number;
+  fieldPts: number;
+  w: number;
+  d: number;
+  l: number;
+  gf: number;
+  ga: number;
+}[] {
+  const currentRaces = races || getStoredRaces();
+  const standingsMap: Record<HallId, {
+    hall: HallId;
+    pts: number;
+    events: number;
+    gold: number;
+    silver: number;
+    bronze: number;
+    trackPts: number;
+    fieldPts: number;
+    w: number;
+    d: number;
+    l: number;
+    gf: number;
+    ga: number;
+  }> = {
+    blue:   { hall: "blue",   pts: 0, events: 0, gold: 0, silver: 0, bronze: 0, trackPts: 0, fieldPts: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0 },
+    black:  { hall: "black",  pts: 0, events: 0, gold: 0, silver: 0, bronze: 0, trackPts: 0, fieldPts: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0 },
+    gold:   { hall: "gold",   pts: 0, events: 0, gold: 0, silver: 0, bronze: 0, trackPts: 0, fieldPts: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0 },
+    purple: { hall: "purple", pts: 0, events: 0, gold: 0, silver: 0, bronze: 0, trackPts: 0, fieldPts: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0 },
+  };
+
+  currentRaces.forEach((r) => {
+    if (r.results && r.results.positions && r.results.positions.length > 0) {
+      r.results.positions.forEach((pos) => {
+        const item = standingsMap[pos.hallId];
+        if (item) {
+          item.pts += pos.points;
+          item.events += 1;
+          if (r.category === "track") item.trackPts += pos.points;
+          else item.fieldPts += pos.points;
+
+          if (pos.position === 1) item.gold += 1;
+          else if (pos.position === 2) item.silver += 1;
+          else if (pos.position === 3) item.bronze += 1;
+        }
+      });
+    }
+  });
+
+  return Object.values(standingsMap).sort((a, b) => b.pts - a.pts);
 }
 
 export function saveAllRaces(races: RaceEvent[]): void {
@@ -296,6 +339,7 @@ export function submitJudgeResult(
   };
 
   if (typeof window !== "undefined") {
+    localStorage.setItem("current_live_broadcast_v3", JSON.stringify(liveBroadcast));
     localStorage.setItem("current_live_broadcast", JSON.stringify(liveBroadcast));
     window.dispatchEvent(new Event("storage"));
   }
