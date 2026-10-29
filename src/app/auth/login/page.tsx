@@ -20,21 +20,25 @@ export default function LoginPage() {
     setTimeout(() => {
       const res = loginUser(identifier, password);
       setLoading(false);
-      if (res.success) {
-        router.push("/admin");
+      if (res.success && res.user) {
+        if (res.user.role === "judge") {
+          router.push("/admin/judge");
+        } else {
+          router.push("/admin");
+        }
       } else {
         setError(res.error || "Authentication failed. Please check your credentials.");
       }
-    }, 500);
+    }, 400);
   };
 
-  const handleQuickRole = (roleType: "admin" | "officer") => {
+  const handleQuickRole = (roleType: "admin" | "judge") => {
     if (roleType === "admin") {
       setIdentifier("admin@sports.edu");
       setPassword("admin123");
     } else {
-      setIdentifier("officer@sports.edu");
-      setPassword("officer123");
+      setIdentifier("judge@sports.edu");
+      setPassword("judge123");
     }
   };
 
@@ -44,65 +48,76 @@ export default function LoginPage() {
       <div className="orb" style={{ width: 500, height: 500, background: "#6366f1", top: "10%", left: "10%" }} />
       <div className="orb" style={{ width: 400, height: 400, background: "#f59e0b", bottom: "10%", right: "10%" }} />
 
-      <div className="glass-card fade-up" style={{ width: "100%", maxWidth: 460, padding: "40px 32px", position: "relative", zIndex: 10 }}>
+      <div className="glass-card fade-up" style={{ width: "100%", maxWidth: 490, padding: "36px 32px", position: "relative", zIndex: 10 }}>
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.png"
             alt="Limkokwing University of Creative Technology"
-            style={{ height: 48, width: "auto", objectFit: "contain", margin: "0 auto 16px", display: "block" }}
+            style={{ height: 48, width: "auto", objectFit: "contain", margin: "0 auto 14px", display: "block" }}
           />
-          <h1 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: "1.8rem", color: "#f1f5f9", marginBottom: 6 }}>
+          <h1 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: "1.75rem", color: "#f1f5f9", marginBottom: 6 }}>
             Official Portal Login
           </h1>
-          <p style={{ color: "#64748b", fontSize: "0.88rem" }}>
-            Inter-Hall Athletics Championship System
+          <p style={{ color: "#64748b", fontSize: "0.85rem" }}>
+            Limkokwing 4th Inter-Hall Athletic Sport Meet
           </p>
         </div>
 
-        {/* Role Detection notice */}
-        <div style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.22)", borderRadius: 12, padding: "14px 16px", marginBottom: 24, fontSize: "0.82rem", color: "#cbd5e1" }}>
-          <div style={{ fontWeight: 700, color: "#818cf8", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
-            <span>🔑</span> Role-Based Credential Access
+        {/* Credentials Reference Card */}
+        <div style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 12, padding: "14px 16px", marginBottom: 22, fontSize: "0.82rem" }}>
+          <div style={{ fontWeight: 700, color: "#818cf8", marginBottom: 8, display: "flex", alignItems: "center", gap: 6 }}>
+            <span>🔑</span> Official Portal Credentials
           </div>
-          <div style={{ color: "#94a3b8", lineHeight: 1.5, marginBottom: 10 }}>
-            Your login credentials automatically assign your role as either <strong style={{ color: "#ffffff" }}>Administrator</strong> or <strong style={{ color: "#ffffff" }}>Event Officer</strong>.
+          
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
+            <div style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, padding: "8px 10px" }}>
+              <div style={{ fontWeight: 800, color: "#a5b4fc", fontSize: "0.78rem" }}>👑 Admin Role</div>
+              <div style={{ color: "#e2e8f0", fontSize: "0.74rem", fontFamily: "monospace" }}>admin@sports.edu</div>
+              <div style={{ color: "#94a3b8", fontSize: "0.72rem", fontFamily: "monospace" }}>PW: admin123</div>
+            </div>
+            <div style={{ background: "rgba(14,165,233,0.12)", border: "1px solid rgba(14,165,233,0.3)", borderRadius: 8, padding: "8px 10px" }}>
+              <div style={{ fontWeight: 800, color: "#38bdf8", fontSize: "0.78rem" }}>⚖️ Judge Role</div>
+              <div style={{ color: "#e2e8f0", fontSize: "0.74rem", fontFamily: "monospace" }}>judge@sports.edu</div>
+              <div style={{ color: "#94a3b8", fontSize: "0.72rem", fontFamily: "monospace" }}>PW: judge123</div>
+            </div>
           </div>
+
           <div style={{ display: "flex", gap: 8 }}>
             <button
               type="button"
               onClick={() => handleQuickRole("admin")}
               style={{
                 flex: 1,
-                padding: "6px 8px",
-                borderRadius: 6,
-                background: identifier.includes("admin") ? "rgba(99,102,241,0.3)" : "rgba(255,255,255,0.06)",
-                border: identifier.includes("admin") ? "1px solid #818cf8" : "1px solid rgba(255,255,255,0.1)",
+                padding: "7px 10px",
+                borderRadius: 7,
+                background: identifier.includes("admin") ? "rgba(99,102,241,0.35)" : "rgba(255,255,255,0.06)",
+                border: identifier.includes("admin") ? "1px solid #818cf8" : "1px solid rgba(255,255,255,0.12)",
                 color: "#ffffff",
-                fontSize: "0.75rem",
+                fontSize: "0.78rem",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
             >
-              👑 Admin Quick-Fill
+              👑 Fill Admin
             </button>
             <button
               type="button"
-              onClick={() => handleQuickRole("officer")}
+              onClick={() => handleQuickRole("judge")}
               style={{
                 flex: 1,
-                padding: "6px 8px",
-                borderRadius: 6,
-                background: identifier.includes("officer") ? "rgba(14,165,233,0.3)" : "rgba(255,255,255,0.06)",
-                border: identifier.includes("officer") ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.1)",
+                padding: "7px 10px",
+                borderRadius: 7,
+                background: identifier.includes("judge") ? "rgba(14,165,233,0.35)" : "rgba(255,255,255,0.06)",
+                border: identifier.includes("judge") ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.12)",
                 color: "#ffffff",
-                fontSize: "0.75rem",
+                fontSize: "0.78rem",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
             >
-              🎯 Event Officer Quick-Fill
+              ⚖️ Fill Judge
             </button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "event_officer";
+export type UserRole = "admin" | "judge" | "event_officer";
 
 export interface AuthUser {
   email: string;
@@ -27,9 +27,9 @@ export function loginUser(emailOrUsername: string, pass: string): { success: boo
     return { success: false, error: "Please enter your email or username" };
   }
 
-  let role: UserRole = "event_officer";
-  let name = "Sports Event Officer";
-  let roleTitle = "Event Officer";
+  let role: UserRole = "judge";
+  let name = "Official Track & Field Judge";
+  let roleTitle = "Championship Judge";
   let canonicalEmail = identifier;
 
   if (
@@ -43,10 +43,20 @@ export function loginUser(emailOrUsername: string, pass: string): { success: boo
     roleTitle = "Administrator";
     canonicalEmail = identifier.includes("@") ? identifier : "admin@sports.edu";
   } else if (
+    identifier === "judge" ||
+    identifier.startsWith("judge@") ||
+    identifier.includes("judge") ||
+    identifier.includes("referee") ||
+    identifier.includes("scorer")
+  ) {
+    role = "judge";
+    name = "Official Track & Field Judge";
+    roleTitle = "Championship Judge";
+    canonicalEmail = identifier.includes("@") ? identifier : "judge@sports.edu";
+  } else if (
     identifier === "officer" ||
     identifier.startsWith("officer@") ||
     identifier.includes("officer") ||
-    identifier.includes("referee") ||
     identifier.includes("event")
   ) {
     role = "event_officer";
@@ -54,10 +64,10 @@ export function loginUser(emailOrUsername: string, pass: string): { success: boo
     roleTitle = "Event Officer";
     canonicalEmail = identifier.includes("@") ? identifier : "officer@sports.edu";
   } else {
-    // Default default based on common credentials
-    role = "event_officer";
-    name = "Championship Official";
-    roleTitle = "Event Officer";
+    // Default to Judge
+    role = "judge";
+    name = "Championship Official Judge";
+    roleTitle = "Championship Judge";
     canonicalEmail = identifier.includes("@") ? identifier : `${identifier}@sports.edu`;
   }
 

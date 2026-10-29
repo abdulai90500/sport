@@ -6,6 +6,8 @@ import { getCurrentUser, logoutUser, AuthUser } from "@/lib/auth";
 
 const LINKS = [
   { href: "/admin",            icon: "📊", label: "Dashboard", adminOnly: false },
+  { href: "/admin/judge",      icon: "⚖️", label: "Judge Scoring Desk", adminOnly: false },
+  { href: "/admin/races",      icon: "🏁", label: "Race Registration", adminOnly: false },
   { href: "/admin/matches",    icon: "🏃", label: "Athletics & Scores", adminOnly: false },
   { href: "/admin/standings",  icon: "🏆", label: "Leaderboard", adminOnly: false },
   { href: "/admin/sports",     icon: "🏅", label: "Disciplines", adminOnly: false },
@@ -31,6 +33,7 @@ export default function AdminSidebar() {
     router.push("/auth/login");
   };
 
+  const isJudge = user?.role === "judge";
   const isOfficer = user?.role === "event_officer";
 
   return (
@@ -60,10 +63,10 @@ export default function AdminSidebar() {
         {!collapsed && (
           <div>
             <div style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: "0.82rem", color: "#f1f5f9", lineHeight: 1.1 }}>
-              {isOfficer ? "EVENT OFFICER" : "ADMIN PANEL"}
+              {isJudge ? "JUDGE DESK" : isOfficer ? "EVENT OFFICER" : "ADMIN PANEL"}
             </div>
-            <div style={{ fontSize: "0.6rem", color: isOfficer ? "#38bdf8" : "#818cf8", letterSpacing: "0.1em", fontWeight: 700 }}>
-              {isOfficer ? "TRACK & FIELD DESK" : "CHAMPIONSHIP SYSTEM"}
+            <div style={{ fontSize: "0.6rem", color: isJudge ? "#38bdf8" : isOfficer ? "#38bdf8" : "#818cf8", letterSpacing: "0.1em", fontWeight: 700 }}>
+              {isJudge ? "TRACK & FIELD SCORER" : isOfficer ? "TRACK & FIELD DESK" : "CHAMPIONSHIP SYSTEM"}
             </div>
           </div>
         )}
@@ -83,7 +86,7 @@ export default function AdminSidebar() {
       {!collapsed && (
         <div style={{ padding: "12px 16px", background: "rgba(255,255,255,0.02)", borderBottom: "1px solid var(--border-color)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", background: isOfficer ? "#38bdf8" : "#818cf8" }} />
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: isJudge ? "#38bdf8" : isOfficer ? "#38bdf8" : "#818cf8" }} />
             <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#f1f5f9" }}>
               {user ? user.roleTitle : "Administrator"}
             </div>

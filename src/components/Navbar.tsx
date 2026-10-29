@@ -93,7 +93,7 @@ export default function Navbar() {
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 4 }}>
               <Link
-                href="/admin"
+                href={user.role === "judge" ? "/admin/judge" : "/admin"}
                 style={{
                   padding: "7px 14px",
                   borderRadius: 8,
@@ -102,6 +102,8 @@ export default function Navbar() {
                   textDecoration: "none",
                   background: user.role === "admin"
                     ? "linear-gradient(135deg, #6366f1, #8b5cf6)"
+                    : user.role === "judge"
+                    ? "linear-gradient(135deg, #0284c7, #0ea5e9)"
                     : "linear-gradient(135deg, #0ea5e9, #0284c7)",
                   color: "white",
                   display: "inline-flex",
@@ -110,7 +112,7 @@ export default function Navbar() {
                   boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
                 }}
               >
-                <span>{user.role === "admin" ? "👑 Admin" : "🎯 Event Officer"}</span>
+                <span>{user.role === "admin" ? "👑 Admin" : user.role === "judge" ? "⚖️ Judge Desk" : "🎯 Event Officer"}</span>
                 <span style={{ fontSize: "0.7rem", opacity: 0.85, background: "rgba(0,0,0,0.25)", padding: "1px 6px", borderRadius: 4 }}>
                   Panel
                 </span>

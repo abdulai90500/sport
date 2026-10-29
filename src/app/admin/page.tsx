@@ -38,12 +38,12 @@ export default function AdminDashboard() {
             </h1>
             <p style={{ color: "#64748b", fontSize: "0.9rem" }}>Season 2026 · Inter-Hall Track &amp; Field Championship</p>
           </div>
-          <div style={{ display: "flex", gap: 10 }}>
-            <a href="/admin/matches" className="btn-primary" style={{ fontSize: "0.875rem", padding: "10px 18px" }}>
-              + Heat Scoring
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <a href="/admin/judge" className="btn-primary" style={{ fontSize: "0.875rem", padding: "10px 18px", display: "flex", alignItems: "center", gap: 6 }}>
+              <span>⚖️</span> Judge Scoring Desk
             </a>
-            <a href="/admin/students" className="btn-secondary" style={{ fontSize: "0.875rem", padding: "10px 18px" }}>
-              + Register Athlete
+            <a href="/admin/races" className="btn-secondary" style={{ fontSize: "0.875rem", padding: "10px 18px", display: "flex", alignItems: "center", gap: 6 }}>
+              <span>🏁</span> Race Registration &amp; Edit
             </a>
           </div>
         </div>

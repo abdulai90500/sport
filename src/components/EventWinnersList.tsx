@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { getHall } from "@/lib/data";
 
 export interface EventWinner {
@@ -83,6 +84,53 @@ export const CHAMPIONSHIP_WINNERS: EventWinner[] = [
 ];
 
 export default function EventWinnersList() {
+  const [winners, setWinners] = useState<EventWinner[]>(CHAMPIONSHIP_WINNERS);
+
+  useEffect(() => {
+    const loadDynamic = () => {
+      try {
+        const raw = localStorage.getItem("championship_races_v2");
+        if (!raw) return;
+        const races = JSON.parse(raw);
+        if (Array.isArray(races)) {
+          const dynamicWinners: EventWinner[] = [];
+          races.forEach((r: any) => {
+            if (r.results && r.results.positions && r.results.positions.length > 0) {
+              const p1 = r.results.positions.find((p: any) => p.position === 1);
+              if (p1) {
+                dynamicWinners.push({
+                  id: `dyn-${r.id}`,
+                  eventName: r.name,
+                  category: r.category === "track" ? "Track Sprint" : "Field Jump",
+                  winnerName: p1.athleteName,
+                  hallId: p1.hallId,
+                  winningMark: p1.markOrTime,
+                  points: p1.points,
+                  date: r.date || "2026-10-29",
+                  venue: r.venue || "Main Stadium Track",
+                });
+              }
+            }
+          });
+
+          // Deduplicate by eventName
+          const map = new Map<string, EventWinner>();
+          CHAMPIONSHIP_WINNERS.forEach((w) => map.set(w.eventName, w));
+          dynamicWinners.forEach((w) => map.set(w.eventName, w));
+          setWinners(Array.from(map.values()));
+        }
+      } catch {}
+    };
+
+    loadDynamic();
+    window.addEventListener("championship-races-changed", loadDynamic);
+    window.addEventListener("storage", loadDynamic);
+    return () => {
+      window.removeEventListener("championship-races-changed", loadDynamic);
+      window.removeEventListener("storage", loadDynamic);
+    };
+  }, []);
+
   return (
     <div style={{ marginBottom: 48 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
@@ -98,13 +146,13 @@ export default function EventWinnersList() {
           </p>
         </div>
         <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#fbbf24", background: "rgba(245,158,11,0.12)", border: "1px solid rgba(245,158,11,0.3)", padding: "4px 12px", borderRadius: 999 }}>
-          🏆 6 Gold Medals Awarded
+          🏆 {winners.length} Gold Medals Awarded
         </div>
       </div>
 
       {/* Grid of Winners */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 16 }}>
-        {CHAMPIONSHIP_WINNERS.map((win) => {
+        {winners.map((win) => {
           const hall = getHall(win.hallId);
           const isAbdulai = win.winnerName.toLowerCase().includes("abdulai");
 
