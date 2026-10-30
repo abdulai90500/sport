@@ -23,6 +23,8 @@ export default function LoginPage() {
       if (res.success && res.user) {
         if (res.user.role === "judge") {
           router.push("/admin/judge");
+        } else if (res.user.role === "registrar") {
+          router.push("/admin/races");
         } else {
           router.push("/admin");
         }
@@ -115,14 +117,68 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div style={{ marginTop: 28, textAlign: "center", borderTop: "1px solid var(--border-color)", paddingTop: 20 }}>
+        {/* 1-Click Quick Role Sign-in Shortcuts */}
+        <div style={{ marginTop: 22, paddingTop: 18, borderTop: "1px solid var(--border-color)" }}>
+          <div style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10, textAlign: "center" }}>
+            ⚡ Instant 1-Click Role Sign-In
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+            <button
+              type="button"
+              onClick={() => {
+                setIdentifier("judge");
+                setPassword("pass123");
+                const res = loginUser("judge", "pass123");
+                if (res.success) router.push("/admin/judge");
+              }}
+              style={{
+                padding: "10px 8px",
+                borderRadius: 8,
+                background: "rgba(14,165,233,0.12)",
+                border: "1px solid rgba(14,165,233,0.35)",
+                color: "#38bdf8",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+            >
+              ⚖️ Official Judge Desk
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIdentifier("registrar");
+                setPassword("pass123");
+                const res = loginUser("registrar", "pass123");
+                if (res.success) router.push("/admin/races");
+              }}
+              style={{
+                padding: "10px 8px",
+                borderRadius: 8,
+                background: "rgba(99,102,241,0.12)",
+                border: "1px solid rgba(99,102,241,0.35)",
+                color: "#818cf8",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+            >
+              🏁 Race Registrar
+            </button>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 20, textAlign: "center", borderTop: "1px solid var(--border-color)", paddingTop: 16 }}>
           <Link href="/" style={{ color: "#64748b", textDecoration: "none", fontSize: "0.85rem" }}>
             ← Back to Public Championship Site
           </Link>
         </div>
 
         {/* Four Halls decorative bar */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 24 }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 18 }}>
           {HALLS.map((h) => (
             <div key={h.id} style={{ width: 10, height: 10, borderRadius: "50%", background: h.color, boxShadow: `0 0 6px ${h.glow}` }} title={h.name} />
           ))}

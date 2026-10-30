@@ -7,6 +7,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/live", label: "Live" },
   { href: "/standings", label: "Standings" },
   { href: "/sports", label: "Disciplines" },
   { href: "/eligibility", label: "Eligibility" },
@@ -93,7 +94,7 @@ export default function Navbar() {
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 4 }}>
               <Link
-                href={user.role === "judge" ? "/admin/judge" : "/admin"}
+                href={user.role === "judge" ? "/admin/judge" : user.role === "registrar" ? "/admin/races" : "/admin"}
                 style={{
                   padding: "7px 14px",
                   borderRadius: 8,
@@ -104,6 +105,8 @@ export default function Navbar() {
                     ? "linear-gradient(135deg, #6366f1, #8b5cf6)"
                     : user.role === "judge"
                     ? "linear-gradient(135deg, #0284c7, #0ea5e9)"
+                    : user.role === "registrar"
+                    ? "linear-gradient(135deg, #10b981, #059669)"
                     : "linear-gradient(135deg, #0ea5e9, #0284c7)",
                   color: "white",
                   display: "inline-flex",
@@ -112,7 +115,7 @@ export default function Navbar() {
                   boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
                 }}
               >
-                <span>{user.role === "admin" ? "👑 Admin" : user.role === "judge" ? "⚖️ Judge Desk" : "🎯 Event Officer"}</span>
+                <span>{user.role === "admin" ? "👑 Admin" : user.role === "judge" ? "⚖️ Judge Desk" : user.role === "registrar" ? "📋 Registrar" : "🎯 Event Officer"}</span>
                 <span style={{ fontSize: "0.7rem", opacity: 0.85, background: "rgba(0,0,0,0.25)", padding: "1px 6px", borderRadius: 4 }}>
                   Panel
                 </span>

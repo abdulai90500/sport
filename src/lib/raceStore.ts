@@ -33,6 +33,7 @@ export interface RaceEvent {
   id: string;
   name: string;
   category: "track" | "field";
+  raceType?: "individual" | "group";
   venue: string;
   date: string;
   time: string;
@@ -346,3 +347,70 @@ export function submitJudgeResult(
 
   return { races: next, broadcast: liveBroadcast };
 }
+
+// Reset or clear judge scoring for an event
+export function resetJudgeResult(raceId: string): { races: RaceEvent[]; broadcast?: LiveEventBroadcast } {
+  const all = getStoredRaces();
+  const next = all.map((r) => {
+    if (r.id !== raceId) return r;
+    const { results, ...rest } = r;
+    return {
+      ...rest,
+      status: "scheduled" as const,
+    };
+  });
+
+  saveAllRaces(next);
+
+  // If the cleared race was on the live broadcast, refresh broadcast to another completed event or default
+  const remainingCompleted = next.find((r) => r.status === "completed" && r.results);
+  let broadcast: LiveEventBroadcast;
+  if (remainingCompleted && remainingCompleted.results) {
+    broadcast = {
+      id: `live-${remainingCompleted.id}`,
+      sport: "Athletics",
+      eventName: remainingCompleted.name,
+      category: remainingCompleted.category,
+      venue: remainingCompleted.venue,
+      status: "CONCLUDED",
+      timeElapsed: `Official Results Verified by ${remainingCompleted.results.recordedBy}`,
+      standings: remainingCompleted.results.positions.map((p) => ({
+        position: p.position,
+        hallId: p.hallId,
+        athlete: p.athleteName,
+        markOrTime: p.markOrTime,
+        points: p.points,
+      })),
+    };
+  } else {
+    broadcast = {
+      id: "live-ath-1",
+      sport: "Athletics",
+      eventName: "Limkokwing 4th Inter-Hall Athletic Meet",
+      category: "track",
+      venue: "Main Stadium Olympic Track",
+      status: "UPCOMING",
+      timeElapsed: "Championship Opening · All Halls Start at 0 Points",
+      standings: [
+        { position: 1, hallId: "blue", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
+        { position: 2, hallId: "black", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
+        { position: 3, hallId: "gold", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
+        { position: 4, hallId: "purple", athlete: "Awaiting Results", markOrTime: "—", points: 0 },
+      ],
+    };
+  }
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem("current_live_broadcast_v3", JSON.stringify(broadcast));
+    localStorage.setItem("current_live_broadcast", JSON.stringify(broadcast));
+    window.dispatchEvent(new Event("storage"));
+  }
+
+  return { races: next, broadcast };
+}
+
+// Atomically save or update a race and its 4 athletes
+export function saveRaceWithAthletes(race: RaceEvent): RaceEvent[] {
+  return saveRaceEvent(race);
+}
+

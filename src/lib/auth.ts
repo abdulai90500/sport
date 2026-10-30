@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "judge" | "event_officer";
+export type UserRole = "admin" | "judge" | "registrar" | "event_officer";
 
 export interface AuthUser {
   email: string;
@@ -27,9 +27,9 @@ export function loginUser(emailOrUsername: string, pass: string): { success: boo
     return { success: false, error: "Please enter your email or username" };
   }
 
-  let role: UserRole = "judge";
-  let name = "Official Track & Field Judge";
-  let roleTitle = "Championship Judge";
+  let role: UserRole = "registrar";
+  let name = "Athletics Registration Officer";
+  let roleTitle = "Race & Athlete Registrar";
   let canonicalEmail = identifier;
 
   if (
@@ -54,20 +54,23 @@ export function loginUser(emailOrUsername: string, pass: string): { success: boo
     roleTitle = "Championship Judge";
     canonicalEmail = identifier.includes("@") ? identifier : "judge@sports.edu";
   } else if (
-    identifier === "officer" ||
-    identifier.startsWith("officer@") ||
-    identifier.includes("officer") ||
-    identifier.includes("event")
+    identifier === "registrar" ||
+    identifier.startsWith("registrar@") ||
+    identifier.includes("registrar") ||
+    identifier === "register" ||
+    identifier.startsWith("register@") ||
+    identifier.includes("registry") ||
+    identifier.includes("officer")
   ) {
-    role = "event_officer";
-    name = "Track & Field Event Officer";
-    roleTitle = "Event Officer";
-    canonicalEmail = identifier.includes("@") ? identifier : "officer@sports.edu";
+    role = "registrar";
+    name = "Athletics Registration Officer";
+    roleTitle = "Race & Athlete Registrar";
+    canonicalEmail = identifier.includes("@") ? identifier : "registrar@sports.edu";
   } else {
-    // Default to Judge
-    role = "judge";
-    name = "Championship Official Judge";
-    roleTitle = "Championship Judge";
+    // Default to Registrar
+    role = "registrar";
+    name = "Athletics Registration Officer";
+    roleTitle = "Race & Athlete Registrar";
     canonicalEmail = identifier.includes("@") ? identifier : `${identifier}@sports.edu`;
   }
 
